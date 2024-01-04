@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Token, User } from './interface';
 import { Menu } from '@core';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,9 @@ export class LoginService {
   constructor(protected http: HttpClient) {}
 
   login(username: string, password: string, rememberMe = false) {
-    return this.http.post<Token>('/auth/login', { username, password, rememberMe });
+    return this.http
+      .post<Token>('/auth/login', { username, password, rememberMe })
+      .pipe(tap(r => console.log('🚀 ~ file: login.service.ts:18 ~ LoginService ~ login ~ r:', r)));
   }
 
   refresh(params: Record<string, any>) {
